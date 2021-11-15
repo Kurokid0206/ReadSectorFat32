@@ -54,8 +54,8 @@ string dectohex(int n);
 wstring strtowstr(string str);
 int hextodec(string hexVal);
 int sectortoint(BYTE sector[512], string addr, int cnt);
-string clusterinfat(BYTE sector[1913856], int pos);
-vector<int> cntcluster(BYTE sector[1913856], int pos);
+string clusterinfat(BYTE sector[1964544], int pos);
+vector<int> cntcluster(BYTE sector[1964544], int pos);
 
 wstring readSEntry(BYTE entry[32]);
 component* readEntry(BYTE entry[32], wstring name);

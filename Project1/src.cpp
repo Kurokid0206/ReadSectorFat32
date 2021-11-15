@@ -50,7 +50,7 @@ int ReadFAT(LPCWSTR  drive, int readPoint, BYTE sector[1964544])
 
     SetFilePointer(device, readPoint, NULL, FILE_BEGIN);//Set a Point to Read
 
-    if (!ReadFile(device, sector, 1913856, &bytesRead, NULL))
+        if (!ReadFile(device, sector, Glb_Sf * Glb_bps, &bytesRead, NULL))
     {
         return-1;
         //printf("ReadFile: %u\n", GetLastError());
@@ -188,7 +188,7 @@ int sectortoint(BYTE sector[512], string addr, int cnt) {
     return hextodec(s);
 }
 
-string clusterinfat(BYTE sector[1913856], int pos) {
+string clusterinfat(BYTE sector[1964544], int pos) {
     string s;
     //if(pos){ pos -= 1; }
     pos *= 4;
@@ -199,9 +199,9 @@ string clusterinfat(BYTE sector[1913856], int pos) {
     return s;
 }
 
-vector<int> cntcluster(BYTE sector[1913856], int pos) {
+vector<int> cntcluster(BYTE sector[1964544], int pos) {
     vector<int> staken;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < Glb_Sc; i++) {
         staken.push_back(Glb_bgsecter + (pos - 2) * Glb_Sc + i);
     }
     string s = clusterinfat(sector, pos);
