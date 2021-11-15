@@ -33,6 +33,7 @@ int main(int argc, char** argv){
     
     component* f = ReadRdet(L"\\\\.\\F:", (Glb_Sf * Glb_Nf + Glb_Sb) * Glb_bps, 8);
     cout << "\n\nCay thu muc: " << endl;
+    //Set cout mode, unable to use cout from this line
     _setmode(_fileno(stdout), _O_U16TEXT);
     f->show(0);
 
