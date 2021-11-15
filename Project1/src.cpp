@@ -10,6 +10,8 @@
 
 using namespace std;
 
+
+
 wstring strtowstr(string str) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring dest = converter.from_bytes(str);
@@ -123,7 +125,7 @@ int readsectorfrom(string x) {
     cout << "cluster bat dau: " << Glb_bgcluster << endl;
 
     //////DocBangFat
-    ReadFAT(L"\\\\.\\F:", (Glb_Sb) * 512, Glb_FAT);
+    ReadFAT(L"\\\\.\\F:", (Glb_Sb) * Glb_bps, Glb_FAT);
     return 0;
 }
 
@@ -200,7 +202,7 @@ string clusterinfat(BYTE sector[1913856], int pos) {
 vector<int> cntcluster(BYTE sector[1913856], int pos) {
     vector<int> staken;
     for (int i = 0; i < 8; i++) {
-        staken.push_back(Glb_bgsecter + (pos - 2) * 8 + i);
+        staken.push_back(Glb_bgsecter + (pos - 2) * Glb_Sc + i);
     }
     string s = clusterinfat(sector, pos);
     if (s == "FFFFFFFF") {
@@ -279,7 +281,7 @@ component* readEntry(BYTE entry[32], wstring sname) {
     }
     else if (att == "10") {
         f = new Folder(name, sname, "Thu muc", bgC, staken);
-        ReadSRdet(f, L"\\\\.\\F:", (Glb_Sf * Glb_Nf + Glb_Sb+(bgC-2)*8) * Glb_bps, staken.size());
+        ReadSRdet(f, L"\\\\.\\F:", (Glb_Sf * Glb_Nf + Glb_Sb+(bgC-2)*Glb_Sc) * Glb_bps, staken.size());
     }
     else if (att == "20") {
         f = new File(name, sname, "Tap tin", bgC,staken, sz);
@@ -344,7 +346,6 @@ component* ReadRdet(LPCWSTR  drive, int readPoint, int n) {
 }
 
 void ReadSRdet(component* outf, LPCWSTR  drive, int readPoint, int n) {
-    component* f;
     BYTE sector[512];
     vector<wstring> Sname; //vector chua ten tu entry phu
     //doc cac sector cua rdet
@@ -418,6 +419,18 @@ void Readfile(component* f) {
     wcout << data;
 }
 
+File::File(string n, wstring sn, string a, int bgC, vector<int> st, int s) {
+    name = n;
+    sname = sn;
+    while (sname.find(L'\0') != -1) {
+        sname.erase(sname.find(L'\0'), 1);
+    }
+    attribute = a;
+    bgCluster = bgC;
+    staken = st;
+    size = s;
+}
+
 void File::show(int lv) {
 
     string level;
@@ -460,4 +473,36 @@ void File::show(int lv) {
         wcout << strtowstr(level) << L"Khong ho tro loai tep nay!!!"<<endl;
     }
     wcout << endl ;
+}
+
+Folder::Folder(string n, wstring sn, string a, int bgC, vector<int> st) {
+    name = n;
+    sname = sn;
+    while (sname.find(L'\0') != -1) {
+        sname.erase(sname.find(L'\0'), 1);
+    }
+    attribute = a;
+    bgCluster = bgC;
+    staken = st;
+    size = 0;
+}
+
+void Folder::show(int lv) {
+    string level;
+    for (int i = 0; i < lv; i++) {
+        level += '\t';
+    }
+    wcout << strtowstr(level) << "Ten: " << strtowstr(name);
+    if (name == "") {
+        wcout << sname;
+    }
+    wcout << endl;
+    wcout << strtowstr(level) << "Thuoc tinh: " << strtowstr(attribute) << endl;
+    wcout << strtowstr(level) << "Cluster bat dau: " << bgCluster << endl;
+    wcout << strtowstr(level) << "Kich co: " << size << endl << endl;
+    int i = 0;
+
+    for (i; i < sub.size(); i++) {
+        sub[i]->show(lv + 1);
+    }
 }

@@ -22,7 +22,6 @@ extern int Glb_bgcluster;
 extern int Glb_bgsecter;
 extern BYTE Glb_FAT[1964544];
 
-wstring strtowstr(string str);
 
 class component {
 public:
@@ -38,60 +37,21 @@ public:
 
 class File :public component {
 public:
-    File(string n,  wstring sn, string a, int bgC, vector<int> st, int s) {
-        name = n;
-        sname = sn;
-        while (sname.find(L'\0') != -1) {
-            sname.erase(sname.find(L'\0'), 1);
-        }
-        attribute = a;
-        bgCluster = bgC;
-        staken = st;
-        size = s;
-    }
+    File(string n, wstring sn, string a, int bgC, vector<int> st, int s);
     void show(int lv);
 };
 
 class Folder :public component {
 public:
-    Folder(string n,wstring sn, string a,  int bgC, vector<int> st) {
-        name = n;
-        sname = sn;
-        while (sname.find(L'\0') != -1) {
-            sname.erase(sname.find(L'\0'), 1);
-        }
-        attribute = a;
-        bgCluster = bgC;
-        staken = st;
-        size = 0;
-    }
-    void show(int lv) {
-        string level;
-        for (int i = 0; i < lv; i++) {
-            level += '\t';
-        }
-        wcout << strtowstr(level) << "Ten: " << strtowstr(name);
-            if (name == "") {
-                wcout << sname;
-            }
-        wcout << endl;
-        wcout << strtowstr(level) << "Thuoc tinh: " << strtowstr(attribute) << endl;
-        wcout << strtowstr(level) << "Cluster bat dau: " << bgCluster << endl;
-        wcout << strtowstr(level) << "Kich co: " << size << endl << endl;
-        int i=0;
-        
-        for (i; i < sub.size(); i++) {
-            sub[i]->show(lv + 1);
-        }
-    }
+    Folder(string n, wstring sn, string a, int bgC, vector<int> st);
+    void show(int lv);
 };
-
 
 int readsectorfrom(string x);
 int ReadFAT(LPCWSTR  drive, int readPoint, BYTE sector[1964544]);
 int ReadSector(LPCWSTR  drive, int readPoint, BYTE sector[512]);
 string dectohex(int n);
-
+wstring strtowstr(string str);
 int hextodec(string hexVal);
 int sectortoint(BYTE sector[512], string addr, int cnt);
 string clusterinfat(BYTE sector[1913856], int pos);

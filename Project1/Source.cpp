@@ -22,7 +22,6 @@ using namespace std;
 
 int main(int argc, char** argv){
 
-    BYTE sector[512];
     string drive;
     cout << "Nhap o dia: ";
     cin >> drive;
@@ -31,11 +30,13 @@ int main(int argc, char** argv){
         cin >> drive;
     }
     
-    component* f = ReadRdet(L"\\\\.\\F:", (Glb_Sf * Glb_Nf + Glb_Sb) * Glb_bps, 8);
+    component* f = ReadRdet(L"\\\\.\\F:", (Glb_Sf * Glb_Nf + Glb_Sb) * Glb_bps, Glb_Sc);
     cout << "\n\nCay thu muc: " << endl;
     //Set cout mode, unable to use cout from this line
-    _setmode(_fileno(stdout), _O_U16TEXT);
-    f->show(0);
+    if (_setmode(_fileno(stdout), _O_U16TEXT)) {
+        f->show(0);
+    }
+    
 
     return 0;
 }
