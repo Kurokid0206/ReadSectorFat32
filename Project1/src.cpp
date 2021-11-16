@@ -425,7 +425,7 @@ component* ReadRdet(LPCWSTR  drive, int readPoint, int n) {
                     wstring fullname;
                     for (int k = Sname.size() - 1; k >= 0; k--) {
                         fullname += Sname[k];
-                    }  
+                    }
                     readEntry(entry, fullname);
                     if (dectohex(atb) == "08") {
                         //if a volume then f = volume
@@ -527,5 +527,3 @@ void Readfile(component* f) {
     }
     wcout << data;
 }
-
-
