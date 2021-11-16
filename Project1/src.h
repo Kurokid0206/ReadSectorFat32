@@ -27,25 +27,30 @@ extern BYTE Glb_FAT[1964544];
 //abstract class for file and folder
 class component {
 public:
-    string name;
-    wstring sname;
-    string attribute;
-    int bgCluster=0;
-    vector<int> staken;
-    int size=0;
-    vector<component*> sub;
+    string name;            //name of file, null when sname is exist
+    wstring sname;          //sname read from sub entry
+    string attribute;       //attribute of object (volume,folder,file)
+    int bgCluster=0;        //begin cluster
+    vector<int> staken;     //the sector that object take
+    int size=0;             //size of object
+    vector<component*> sub; //sub file/folder (use only for folder)
+    //show obj information
     virtual void show(int) = 0;
 };
 //class file, contain a file information
 class File :public component {
 public:
+    //constructor for file
     File(string n, wstring sn, string a, int bgC, vector<int> st, int s);
+    //show file info
     void show(int lv);
 };
 //class folder, contain folder information and inner file/folder
 class Folder :public component {
 public:
+    //constructor for folder
     Folder(string n, wstring sn, string a, int bgC, vector<int> st);
+    //show folder info (including sub file/folder)
     void show(int lv);
 };
 
