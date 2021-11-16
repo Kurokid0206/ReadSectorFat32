@@ -9,6 +9,7 @@
 using namespace std;
 
 
+//Create global variable to read the usb
  int Glb_bps;
  int Glb_Sc;
  int Glb_Sb;
@@ -29,7 +30,8 @@ int main(int argc, char** argv){
         cout << "Nhap lai o dia: ";
         cin >> drive;
     }
-    
+
+    //Read usb and pass into component f(a folder)
     component* f = ReadRdet(L"\\\\.\\F:", (Glb_Sf * Glb_Nf + Glb_Sb) * Glb_bps, Glb_Sc);
     cout << "\n\nCay thu muc: " << endl;
     //Set cout mode, unable to use cout from this line
