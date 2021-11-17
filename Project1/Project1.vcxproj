@@ -143,11 +143,6 @@
     <ClCompile Include="src.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Text.txt" />
-    <Text Include="Text1.txt" />
-    <Text Include="rdet.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="src.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
